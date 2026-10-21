@@ -6,6 +6,7 @@ import RoleGuard from '@/components/RoleGuard';
 import { useAuth } from '@/lib/auth-context';
 import { getClasses, getAssignments, getSubmissions } from '@/lib/data';
 import { ClassGroup, Assignment, ProjectSubmission } from '@/types';
+import { formatDate } from '@/lib/format';
 import { 
   Users, 
   BookOpen, 
@@ -141,7 +142,7 @@ export default function TeacherDashboard() {
                       <h3 className="font-bold text-slate-900 text-base">{sub.title}</h3>
                       <p className="text-xs text-blue-600 font-medium">{sub.project_title}</p>
                       <span className="text-[11px] text-slate-500 mt-1 block">
-                        Submitted: {new Date(sub.submitted_at).toLocaleDateString()}
+                        Submitted: {formatDate(sub.submitted_at)}
                       </span>
                     </div>
 

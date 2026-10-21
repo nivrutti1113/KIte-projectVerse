@@ -5,6 +5,7 @@ import RoleGuard from '@/components/RoleGuard';
 import { useAuth } from '@/lib/auth-context';
 import { getAssignments, getClasses, getProjects, createAssignment } from '@/lib/data';
 import { Assignment, ClassGroup, Project } from '@/types';
+import { formatDate } from '@/lib/format';
 import { Calendar, Plus, BookOpen, Clock, Award, CheckCircle2 } from 'lucide-react';
 
 export default function TeacherAssignmentsPage() {
@@ -104,7 +105,7 @@ export default function TeacherAssignmentsPage() {
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-amber-50 text-amber-800 border border-amber-200 flex items-center gap-1">
-                      <Clock className="h-3 w-3" /> Due {new Date(asg.due_date).toLocaleDateString()}
+                      <Clock className="h-3 w-3" /> Due {formatDate(asg.due_date)}
                     </span>
                     <span className="text-xs text-blue-600 font-semibold">
                       {asg.class_name}

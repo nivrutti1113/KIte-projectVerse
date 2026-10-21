@@ -60,7 +60,7 @@ export default function Navbar() {
           <span className="text-slate-400 font-medium">Logged in as:</span>
           <span className="text-white font-semibold">{user?.full_name || 'Aarav Sharma'}</span>
           <span className="text-slate-400 hidden sm:inline">•</span>
-          <span className="text-slate-400 hidden sm:inline">{user?.school_name || 'Independent Maker'}</span>
+          <span className="text-slate-400 hidden sm:inline">{user?.school_name || 'KITE Innovation Model School'}</span>
         </div>
 
         {/* Professional Segmented Persona Selector */}

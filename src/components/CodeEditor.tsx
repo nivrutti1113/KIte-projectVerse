@@ -14,6 +14,7 @@ import {
   ShieldCheck,
   AlertTriangle
 } from 'lucide-react';
+import { formatTime } from '@/lib/format';
 
 interface CodeEditorProps {
   initialCode: string;
@@ -71,7 +72,7 @@ export default function CodeEditor({
   const handleSave = () => {
     if (onSave) {
       onSave(code, language);
-      setLastSaved(new Date().toLocaleTimeString());
+      setLastSaved(formatTime(new Date()));
       setHasUnsavedChanges(false);
     }
   };

@@ -4,13 +4,14 @@ import React, { useState } from 'react';
 import RoleGuard from '@/components/RoleGuard';
 import { useAuth } from '@/lib/auth-context';
 import { BarChart3, Download, CheckCircle2, ShieldCheck, Sparkles, Printer } from 'lucide-react';
+import { formatDate } from '@/lib/format';
 
 export default function SchoolReportsPage() {
   const { user } = useAuth();
   const [downloaded, setDownloaded] = useState(false);
 
   const handleExport = () => {
-    const csvContent = `KITE ProjectVerse - ATL Lab Compliance Report\nSchool: ${user?.school_name || 'KITE Innovation Model School'}\nGenerated Date: ${new Date().toLocaleDateString()}\n\nMetric,Value\nTotal Hands-on Lab Hours,1280 Hours\nEnrolled STEM Students,240\nVerified Project Submissions,184\nAutonomous Robotics Share,45%\nArduino & Embedded Share,32%\nAI & Vision Share,23%\nStatus,Fully Compliant with Atal Innovation Mission (AIM)\n`;
+    const csvContent = `KITE ProjectVerse - ATL Lab Compliance Report\nSchool: ${user?.school_name || 'KITE Innovation Model School'}\nGenerated Date: ${formatDate(new Date())}\n\nMetric,Value\nTotal Hands-on Lab Hours,1280 Hours\nEnrolled STEM Students,240\nVerified Project Submissions,184\nAutonomous Robotics Share,45%\nArduino & Embedded Share,32%\nAI & Vision Share,23%\nStatus,Fully Compliant with Atal Innovation Mission (AIM)\n`;
     
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);

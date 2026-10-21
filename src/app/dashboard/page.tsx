@@ -10,6 +10,7 @@ import {
   getNotifications 
 } from '@/lib/data';
 import { StudentProject, Assignment, StudentBadge, InAppNotification } from '@/types';
+import { formatDate } from '@/lib/format';
 import { 
   Play, 
   Award, 
@@ -166,7 +167,7 @@ export default function StudentDashboard() {
                         <span>•</span>
                         <span>{sp.progress_percent}% complete</span>
                         <span>•</span>
-                        <span>Saved {new Date(sp.last_saved_at).toLocaleDateString()}</span>
+                        <span>Saved {formatDate(sp.last_saved_at)}</span>
                       </div>
                     </div>
                   </div>
@@ -198,7 +199,7 @@ export default function StudentDashboard() {
                 >
                   <div>
                     <span className="px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200 font-bold text-[10px] uppercase">
-                      Due {new Date(asg.due_date).toLocaleDateString()}
+                      Due {formatDate(asg.due_date)}
                     </span>
                     <h3 className="font-bold text-slate-900 text-sm mt-1">{asg.title}</h3>
                     <p className="text-slate-600 text-xs mt-0.5">{asg.description}</p>
@@ -246,7 +247,7 @@ export default function StudentDashboard() {
                     <h4 className="font-bold text-slate-900">{sb.badge?.title}</h4>
                     <p className="text-[11px] text-slate-600 line-clamp-1">{sb.reason}</p>
                     <span className="text-[10px] text-slate-400">
-                      Awarded {new Date(sb.awarded_at).toLocaleDateString()}
+                      Awarded {formatDate(sb.awarded_at)}
                     </span>
                   </div>
                 </div>

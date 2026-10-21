@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import RoleGuard from '@/components/RoleGuard';
 import { getAuditLogs } from '@/lib/data';
 import { AuditLog } from '@/types';
+import { formatDateTime } from '@/lib/format';
 import { ShieldAlert, Clock, User, Filter } from 'lucide-react';
 
 export default function AdminAuditLogsPage() {
@@ -48,7 +49,7 @@ export default function AdminAuditLogsPage() {
                   logs.map(log => (
                     <tr key={log.id} className="hover:bg-slate-50/70 transition-colors">
                       <td className="py-3.5 px-4 font-mono text-slate-500">
-                        {new Date(log.created_at).toLocaleTimeString()}
+                        {formatDateTime(log.created_at)}
                       </td>
                       <td className="py-3.5 px-4 font-semibold text-slate-900">
                         {log.actor_name || 'System Admin'}

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
 import { getSubmissions } from '@/lib/data';
 import { ProjectSubmission } from '@/types';
+import { formatDate } from '@/lib/format';
 import { 
   Send, 
   CheckCircle2, 
@@ -93,7 +94,7 @@ export default function SubmissionsPage() {
                       {sub.status.replace('_', ' ')}
                     </span>
                     <span className="text-[11px] text-slate-500">
-                      {new Date(sub.submitted_at).toLocaleDateString()}
+                      {formatDate(sub.submitted_at)}
                     </span>
                   </div>
 

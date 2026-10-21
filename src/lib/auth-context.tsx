@@ -25,22 +25,21 @@ const ROLE_USER_MAP: Record<UserRole, string> = {
 };
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<UserProfile | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<UserProfile | null>(SEED_USERS['usr-student-1']);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // Check saved session in localStorage
-    const savedUserId = typeof window !== 'undefined' ? localStorage.getItem('kite_user_id') : null;
-    if (savedUserId && SEED_USERS[savedUserId]) {
-      setUser(SEED_USERS[savedUserId]);
-    } else {
-      // Default to student for realistic STEM maker exploration
-      setUser(SEED_USERS['usr-student-1']);
-      if (typeof window !== 'undefined') {
+    // Check saved session in localStorage after mounting
+    try {
+      const savedUserId = typeof window !== 'undefined' ? localStorage.getItem('kite_user_id') : null;
+      if (savedUserId && SEED_USERS[savedUserId]) {
+        setUser(SEED_USERS[savedUserId]);
+      } else if (typeof window !== 'undefined') {
         localStorage.setItem('kite_user_id', 'usr-student-1');
       }
+    } catch {
+      // Ignore storage access errors in private browsing modes
     }
-    setIsLoading(false);
   }, []);
 
   const login = async (email: string, targetRole?: UserRole): Promise<boolean> => {

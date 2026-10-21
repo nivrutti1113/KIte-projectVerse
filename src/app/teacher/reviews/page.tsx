@@ -5,6 +5,7 @@ import RoleGuard from '@/components/RoleGuard';
 import { useAuth } from '@/lib/auth-context';
 import { getSubmissions, reviewSubmission } from '@/lib/data';
 import { ProjectSubmission, RubricScore } from '@/types';
+import { formatDate } from '@/lib/format';
 import { 
   FileCheck2, 
   Award, 
@@ -160,7 +161,7 @@ export default function TeacherReviewsPage() {
                       {sub.status.replace('_', ' ')}
                     </span>
                     <span className="text-[11px] text-slate-500">
-                      {new Date(sub.submitted_at).toLocaleDateString()}
+                      {formatDate(sub.submitted_at)}
                     </span>
                   </div>
 

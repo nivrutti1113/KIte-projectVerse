@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
 import { getStudentPortfolio, updateStudentPortfolio } from '@/lib/data';
 import { StudentPortfolio } from '@/types';
+import { formatDate } from '@/lib/format';
 import { 
   Award, 
   Bot, 
@@ -321,7 +322,7 @@ function PortfolioInner({ username }: { username: string }) {
                 </div>
 
                 <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                  <span>Completed: {new Date(proj.completed_at).toLocaleDateString()}</span>
+                  <span>Completed: {formatDate(proj.completed_at)}</span>
                   <Link
                     href={`/projects/${proj.project_slug}`}
                     className="text-blue-600 font-semibold hover:underline flex items-center gap-1"
