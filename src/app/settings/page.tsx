@@ -28,27 +28,27 @@ export default function SettingsPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <div className="mb-8">
-        <h1 className="text-3xl font-extrabold text-white flex items-center gap-2.5">
-          <Settings className="h-7 w-7 text-cyan-400" /> Account Settings & Preferences
+        <h1 className="text-3xl font-extrabold text-slate-900 flex items-center gap-2.5">
+          <Settings className="h-7 w-7 text-blue-600" /> Account Settings & Preferences
         </h1>
-        <p className="text-slate-400 text-sm mt-1">
+        <p className="text-slate-600 text-sm mt-1">
           Manage your personal profile, active persona, and notifications.
         </p>
       </div>
 
       {saved && (
-        <div className="mb-6 p-4 rounded-2xl bg-emerald-950/70 border border-emerald-800 text-emerald-200 text-xs sm:text-sm flex items-center gap-2">
-          <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+        <div className="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm flex items-center gap-2 shadow-2xs">
+          <CheckCircle2 className="h-4 w-4 text-emerald-600" />
           <span>Profile changes saved successfully!</span>
         </div>
       )}
 
       {/* Role Switcher Card */}
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 mb-8 shadow-xl">
-        <h2 className="text-sm font-bold text-white uppercase tracking-wider mb-2">
+      <div className="bg-white border border-slate-200 rounded-2xl p-6 mb-8 shadow-xs">
+        <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-2">
           Active Demonstration Persona
         </h2>
-        <p className="text-xs text-slate-400 mb-4">
+        <p className="text-xs text-slate-600 mb-4">
           Switch roles to test Student, Teacher, School Admin, or Platform Admin capabilities:
         </p>
 
@@ -62,90 +62,90 @@ export default function SettingsPage() {
             <button
               key={r.id}
               onClick={() => switchRole(r.id as UserRole)}
-              className={`p-3 rounded-2xl border text-left transition-all ${
+              className={`p-3 rounded-xl border text-left transition-all ${
                 role === r.id
-                  ? 'bg-indigo-600/30 border-cyan-400 text-white shadow-md'
-                  : 'bg-slate-950 border-slate-800 text-slate-300 hover:border-slate-700'
+                  ? 'bg-blue-50 border-blue-500 text-blue-900 shadow-2xs ring-1 ring-blue-500/20'
+                  : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-slate-300'
               }`}
             >
               <div className="font-bold">{r.label}</div>
-              <div className="text-[10px] text-slate-400 mt-0.5">{r.name}</div>
+              <div className="text-[10px] text-slate-500 mt-0.5">{r.name}</div>
             </button>
           ))}
         </div>
       </div>
 
       {/* Profile Form */}
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl">
-        <h2 className="text-base font-bold text-white mb-6">Profile Details</h2>
+      <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs">
+        <h2 className="text-base font-bold text-slate-900 mb-6">Profile Details</h2>
 
         <form onSubmit={handleSave} className="space-y-4 text-xs sm:text-sm">
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Full Name</label>
+            <label className="block text-slate-700 font-semibold mb-1">Full Name</label>
             <input
               type="text"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               required
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:bg-white focus:ring-2 focus:ring-blue-600"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-slate-300 font-semibold mb-1">Username Handle</label>
+              <label className="block text-slate-700 font-semibold mb-1">Username Handle</label>
               <input
                 type="text"
                 value={user?.username || 'maker'}
                 disabled
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-500 text-xs font-mono"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-500 text-xs font-mono"
               />
             </div>
             <div>
-              <label className="block text-slate-300 font-semibold mb-1">Grade / Class</label>
+              <label className="block text-slate-700 font-semibold mb-1">Grade / Class</label>
               <input
                 type="text"
                 value={gradeLevel}
                 onChange={(e) => setGradeLevel(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:bg-white focus:ring-2 focus:ring-blue-600"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Email</label>
+            <label className="block text-slate-700 font-semibold mb-1">Email</label>
             <input
               type="email"
               value={user?.email || 'student@kite.test'}
               disabled
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-500 text-xs"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-500 text-xs"
             />
           </div>
 
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Guardian / Parent Email</label>
+            <label className="block text-slate-700 font-semibold mb-1">Guardian / Parent Email</label>
             <input
               type="email"
               value={parentEmail}
               onChange={(e) => setParentEmail(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs focus:bg-white focus:ring-2 focus:ring-blue-600"
             />
           </div>
 
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Bio</label>
+            <label className="block text-slate-700 font-semibold mb-1">Bio</label>
             <textarea
               value={bio}
               onChange={(e) => setBio(e.target.value)}
               rows={3}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs leading-relaxed"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs leading-relaxed focus:bg-white focus:ring-2 focus:ring-blue-600"
             />
           </div>
 
-          <div className="pt-4 border-t border-slate-800 flex justify-end">
+          <div className="pt-4 border-t border-slate-200 flex justify-end">
             <button
               type="submit"
-              className="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs"
+              className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs shadow-xs transition-colors"
             >
               Save Preferences
             </button>

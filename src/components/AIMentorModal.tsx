@@ -94,22 +94,22 @@ export default function AIMentorModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-150">
-      <div className="w-full max-w-2xl bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-150">
+      <div className="w-full max-w-2xl bg-white border border-slate-200 rounded-2xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-3.5 bg-slate-950 border-b border-slate-800">
-          <div className="flex items-center gap-2.5">
-            <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center text-white shadow-md">
+        <div className="flex items-center justify-between px-5 py-3.5 bg-slate-50/80 border-b border-slate-200">
+          <div className="flex items-center gap-3">
+            <div className="h-9 w-9 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-sm">
               <Bot className="h-5 w-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="font-bold text-sm text-white">KITE AI STEM Mentor</h3>
-                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-800/60">
+                <h3 className="font-semibold text-sm text-slate-900">KITE AI STEM Mentor</h3>
+                <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
                   Step {currentStep} Active
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 truncate max-w-xs sm:max-w-md">
+              <p className="text-xs text-slate-500 truncate max-w-xs sm:max-w-md">
                 Guiding: {projectTitle}
               </p>
             </div>
@@ -117,14 +117,14 @@ export default function AIMentorModal({
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         {/* Message Thread */}
-        <div className="flex-1 p-4 overflow-y-auto space-y-3 text-xs sm:text-sm">
+        <div className="flex-1 p-4 overflow-y-auto space-y-3 text-xs sm:text-sm bg-white">
           {messages.map((m, idx) => (
             <div
               key={idx}
@@ -133,15 +133,15 @@ export default function AIMentorModal({
               <div
                 className={`max-w-[85%] rounded-2xl p-3.5 ${
                   m.sender === 'user'
-                    ? 'bg-indigo-600 text-white rounded-br-none shadow-md'
-                    : 'bg-slate-800/90 text-slate-100 rounded-bl-none border border-slate-700/80 shadow-md'
+                    ? 'bg-blue-600 text-white rounded-br-xs shadow-xs'
+                    : 'bg-slate-50 text-slate-800 rounded-bl-xs border border-slate-200 shadow-xs'
                 }`}
               >
                 <div className="whitespace-pre-wrap leading-relaxed font-sans">
                   {m.text}
                 </div>
                 {m.disclaimer && (
-                  <p className="text-[10px] text-slate-400 mt-2 pt-2 border-t border-slate-700/60 italic">
+                  <p className={`text-[10px] mt-2 pt-2 border-t italic ${m.sender === 'user' ? 'text-blue-100 border-blue-500/50' : 'text-slate-400 border-slate-200'}`}>
                     {m.disclaimer}
                   </p>
                 )}
@@ -150,37 +150,37 @@ export default function AIMentorModal({
           ))}
 
           {loading && (
-            <div className="flex items-center gap-2 text-xs text-cyan-400 p-2">
-              <Sparkles className="h-4 w-4 animate-spin" />
+            <div className="flex items-center gap-2 text-xs text-blue-600 p-2 font-medium">
+              <Sparkles className="h-4 w-4 animate-spin text-blue-600" />
               <span>KITE Mentor is reasoning and analyzing your setup...</span>
             </div>
           )}
 
           {error && (
-            <div className="flex items-center gap-2 text-xs text-rose-400 bg-rose-950/40 border border-rose-800/60 p-3 rounded-xl">
-              <AlertCircle className="h-4 w-4 flex-shrink-0" />
+            <div className="flex items-center gap-2 text-xs text-rose-700 bg-rose-50 border border-rose-200 p-3 rounded-xl">
+              <AlertCircle className="h-4 w-4 flex-shrink-0 text-rose-600" />
               <span>{error}</span>
             </div>
           )}
         </div>
 
         {/* Quick Question Chips */}
-        <div className="px-4 py-2 bg-slate-950/60 border-t border-slate-800 overflow-x-auto flex gap-1.5 scrollbar-none">
+        <div className="px-4 py-2.5 bg-slate-50 border-t border-slate-200 overflow-x-auto flex gap-1.5 scrollbar-none">
           {quickPrompts.map((prompt, i) => (
             <button
               key={i}
               onClick={() => handleSend(prompt)}
               disabled={loading}
-              className="text-[11px] whitespace-nowrap px-2.5 py-1 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-all flex items-center gap-1 disabled:opacity-50"
+              className="text-[11px] font-medium whitespace-nowrap px-3 py-1.5 rounded-full bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 transition-all flex items-center gap-1.5 shadow-2xs disabled:opacity-50"
             >
-              <Lightbulb className="h-3 w-3 text-amber-400" />
+              <Lightbulb className="h-3 w-3 text-amber-500" />
               {prompt}
             </button>
           ))}
         </div>
 
         {/* Input Footer */}
-        <div className="p-3 bg-slate-950 border-t border-slate-800">
+        <div className="p-3.5 bg-white border-t border-slate-200">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -195,20 +195,20 @@ export default function AIMentorModal({
               placeholder="Ask a question about your circuit, motors, code bug, or physics..."
               maxLength={1000}
               disabled={loading}
-              className="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all"
+              className="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
             />
             <button
               type="submit"
               disabled={loading || !question.trim()}
-              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-semibold text-xs sm:text-sm flex items-center gap-1.5 shadow-md shadow-cyan-500/20 disabled:opacity-50 transition-all"
+              className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs sm:text-sm flex items-center gap-1.5 shadow-xs disabled:opacity-50 transition-all"
             >
               <Send className="h-4 w-4" />
               <span className="hidden sm:inline">Ask</span>
             </button>
           </form>
-          <div className="flex items-center justify-between mt-2 px-1 text-[10px] text-slate-400">
-            <span className="flex items-center gap-1">
-              <ShieldCheck className="h-3 w-3 text-emerald-400" /> Minor Safe • Rate-limited to 25 queries/hour
+          <div className="flex items-center justify-between mt-2 px-1 text-[11px] text-slate-500">
+            <span className="flex items-center gap-1.5">
+              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" /> Minor Safe • Rate-limited to 25 queries/hour
             </span>
             <span>{question.length}/1000</span>
           </div>

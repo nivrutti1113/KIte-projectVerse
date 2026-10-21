@@ -109,15 +109,15 @@ export default function AdminProjectsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-3xl font-extrabold text-white">Project Catalog Administration</h1>
-            <p className="text-slate-400 text-sm mt-1">
+            <h1 className="text-3xl font-extrabold text-slate-900">Project Catalog Administration</h1>
+            <p className="text-slate-600 text-sm mt-1">
               Author, publish, edit, and configure hands-on STEM project curriculum.
             </p>
           </div>
 
           <button
             onClick={() => setIsModalOpen(true)}
-            className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white font-bold text-xs flex items-center gap-1.5 shadow-md shadow-indigo-600/20"
+            className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs flex items-center gap-1.5 shadow-xs transition-colors"
           >
             <Plus className="h-4 w-4" />
             <span>Create STEM Project</span>
@@ -133,16 +133,16 @@ export default function AdminProjectsPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search catalog projects..."
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs sm:text-sm text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
+              className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600 shadow-2xs"
             />
           </div>
         </div>
 
         {/* Projects Table */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+        <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-950 text-slate-400 uppercase tracking-wider text-[11px] border-b border-slate-800">
+              <thead className="bg-slate-50 text-slate-600 uppercase tracking-wider text-[11px] border-b border-slate-200 font-semibold">
                 <tr>
                   <th className="py-3.5 px-4 font-semibold">Title & Category</th>
                   <th className="py-3.5 px-4 font-semibold">Grade</th>
@@ -153,30 +153,30 @@ export default function AdminProjectsPage() {
                   <th className="py-3.5 px-4 font-semibold text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/80 text-slate-300">
+              <tbody className="divide-y divide-slate-100 text-slate-700">
                 {filtered.map(p => (
-                  <tr key={p.id} className="hover:bg-slate-800/40 transition-colors">
+                  <tr key={p.id} className="hover:bg-slate-50/70 transition-colors">
                     <td className="py-3.5 px-4">
-                      <div className="font-bold text-white text-sm">{p.title}</div>
-                      <span className="text-[11px] text-cyan-400">{p.category}</span>
+                      <div className="font-bold text-slate-900 text-sm">{p.title}</div>
+                      <span className="text-[11px] text-blue-600 font-medium">{p.category}</span>
                     </td>
                     <td className="py-3.5 px-4">
                       Class {p.grade_min}–{p.grade_max}
                     </td>
                     <td className="py-3.5 px-4">
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-200">
+                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-700">
                         {p.difficulty}
                       </span>
                     </td>
-                    <td className="py-3.5 px-4 font-mono">
+                    <td className="py-3.5 px-4 font-mono font-medium">
                       {p.estimated_hours}h
                     </td>
-                    <td className="py-3.5 px-4 font-mono text-emerald-400">
+                    <td className="py-3.5 px-4 font-mono text-emerald-600 font-semibold">
                       ₹{p.estimated_cost_inr || 0}
                     </td>
                     <td className="py-3.5 px-4">
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                        p.access_tier === 'premium' ? 'bg-amber-950 text-amber-400 border border-amber-800' : 'bg-emerald-950 text-emerald-400 border border-emerald-800'
+                      <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-semibold ${
+                        p.access_tier === 'premium' ? 'bg-amber-50 text-amber-800 border border-amber-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                       }`}>
                         {p.access_tier}
                       </span>
@@ -185,14 +185,14 @@ export default function AdminProjectsPage() {
                       <div className="flex items-center justify-end gap-2">
                         <Link
                           href={`/projects/${p.slug}`}
-                          className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white"
+                          className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
                           title="View public page"
                         >
                           <ExternalLink className="h-3.5 w-3.5" />
                         </Link>
                         <button
                           onClick={() => handleDelete(p.id)}
-                          className="p-1.5 rounded-lg bg-rose-950/60 hover:bg-rose-900 text-rose-300"
+                          className="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 transition-colors"
                           title="Delete project"
                         >
                           <Trash2 className="h-3.5 w-3.5" />
@@ -208,40 +208,40 @@ export default function AdminProjectsPage() {
 
         {/* Create Project Modal */}
         {isModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in">
-            <div className="w-full max-w-2xl bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl p-6 max-h-[90vh] overflow-y-auto">
-              <h3 className="font-bold text-base text-white mb-4">Create Official STEM Project</h3>
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in">
+            <div className="w-full max-w-2xl bg-white border border-slate-200 rounded-2xl shadow-xl p-6 max-h-[90vh] overflow-y-auto">
+              <h3 className="font-bold text-base text-slate-900 mb-4">Create Official STEM Project</h3>
               <form onSubmit={handleCreate} className="space-y-4 text-xs">
                 <div>
-                  <label className="block text-slate-300 font-semibold mb-1">Project Title *</label>
+                  <label className="block text-slate-700 font-semibold mb-1">Project Title *</label>
                   <input
                     type="text"
                     value={title}
                     onChange={handleTitleChange}
                     required
                     placeholder="e.g. Line Follower Robot with Infrared Sensors"
-                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:bg-white focus:ring-2 focus:ring-blue-600"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 font-semibold mb-1">Slug (URL Kebab) *</label>
+                  <label className="block text-slate-700 font-semibold mb-1">Slug (URL Kebab) *</label>
                   <input
                     type="text"
                     value={slug}
                     onChange={(e) => setSlug(e.target.value)}
                     required
-                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:bg-white focus:ring-2 focus:ring-blue-600 font-mono"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-slate-300 font-semibold mb-1">Category *</label>
+                    <label className="block text-slate-700 font-semibold mb-1">Category *</label>
                     <select
                       value={category}
                       onChange={(e) => setCategory(e.target.value as ProjectCategory)}
-                      className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:bg-white focus:ring-2 focus:ring-blue-600"
                     >
                       <option value="Robotics">Robotics</option>
                       <option value="Electronics">Electronics</option>
@@ -254,11 +254,11 @@ export default function AdminProjectsPage() {
                   </div>
 
                   <div>
-                    <label className="block text-slate-300 font-semibold mb-1">Difficulty *</label>
+                    <label className="block text-slate-700 font-semibold mb-1">Difficulty *</label>
                     <select
                       value={difficulty}
                       onChange={(e) => setDifficulty(e.target.value as DifficultyLevel)}
-                      className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:bg-white focus:ring-2 focus:ring-blue-600"
                     >
                       <option value="Beginner">Beginner</option>
                       <option value="Intermediate">Intermediate</option>
@@ -268,53 +268,53 @@ export default function AdminProjectsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 font-semibold mb-1">Short Summary *</label>
+                  <label className="block text-slate-700 font-semibold mb-1">Short Summary *</label>
                   <textarea
                     value={summary}
                     onChange={(e) => setSummary(e.target.value)}
                     required
                     rows={2}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:bg-white focus:ring-2 focus:ring-blue-600 leading-relaxed"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 font-semibold mb-1">Detailed Description & Physics *</label>
+                  <label className="block text-slate-700 font-semibold mb-1">Detailed Description & Physics *</label>
                   <textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     required
                     rows={3}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:bg-white focus:ring-2 focus:ring-blue-600 leading-relaxed"
                   />
                 </div>
 
                 <div className="grid grid-cols-3 gap-3">
                   <div>
-                    <label className="block text-slate-300 font-semibold mb-1">Est. Hours</label>
+                    <label className="block text-slate-700 font-semibold mb-1">Est. Hours</label>
                     <input
                       type="number"
                       step="0.5"
                       value={estimatedHours}
                       onChange={(e) => setEstimatedHours(Number(e.target.value))}
-                      className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:bg-white focus:ring-2 focus:ring-blue-600"
                     />
                   </div>
                   <div>
-                    <label className="block text-slate-300 font-semibold mb-1">Cost (INR)</label>
+                    <label className="block text-slate-700 font-semibold mb-1">Cost (INR)</label>
                     <input
                       type="number"
                       value={estimatedCostInr}
                       onChange={(e) => setEstimatedCostInr(Number(e.target.value))}
-                      className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:bg-white focus:ring-2 focus:ring-blue-600"
                     />
                   </div>
                   <div>
-                    <label className="block text-slate-300 font-semibold mb-1">Tier</label>
+                    <label className="block text-slate-700 font-semibold mb-1">Tier</label>
                     <select
                       value={accessTier}
                       onChange={(e) => setAccessTier(e.target.value as AccessTier)}
-                      className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:bg-white focus:ring-2 focus:ring-blue-600"
                     >
                       <option value="free">Free</option>
                       <option value="premium">Premium Pro</option>
@@ -322,17 +322,17 @@ export default function AdminProjectsPage() {
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-slate-800 flex justify-end gap-2">
+                <div className="pt-4 border-t border-slate-200 flex justify-end gap-2">
                   <button
                     type="button"
                     onClick={() => setIsModalOpen(false)}
-                    className="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 font-semibold"
+                    className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-6 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold"
+                    className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-xs transition-colors"
                   >
                     Publish to Catalog
                   </button>

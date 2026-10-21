@@ -213,17 +213,17 @@ export default function CodeEditor({
   const lineNumbers = Array.from({ length: Math.max(lineCount, 15) }, (_, i) => i + 1);
 
   return (
-    <div className="flex flex-col bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl">
+    <div className="flex flex-col bg-slate-900 border border-slate-700/80 rounded-2xl overflow-hidden shadow-lg">
       {/* Editor Header Toolbar */}
       <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-2.5 bg-slate-900 border-b border-slate-800 text-xs">
         <div className="flex items-center gap-2">
-          <FileCode className="h-4 w-4 text-cyan-400" />
+          <FileCode className="h-4 w-4 text-blue-400" />
           <span className="font-semibold text-white">Project Code Editor</span>
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
             disabled={readOnly}
-            className="bg-slate-800 text-slate-200 border border-slate-700 rounded-lg px-2 py-1 text-xs focus:ring-1 focus:ring-cyan-400 focus:outline-none capitalize"
+            className="bg-slate-800 text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none capitalize"
           >
             <option value="python">Python 3</option>
             <option value="arduino">Arduino C++ (.ino)</option>
@@ -232,8 +232,8 @@ export default function CodeEditor({
           </select>
 
           {hasUnsavedChanges && (
-            <span className="bg-amber-950 text-amber-400 border border-amber-800/60 px-2 py-0.5 rounded-full text-[10px] font-medium flex items-center gap-1">
-              <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
+            <span className="bg-amber-950/80 text-amber-300 border border-amber-800/80 px-2 py-0.5 rounded-full text-[10px] font-medium flex items-center gap-1">
+              <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
               Unsaved
             </span>
           )}
@@ -249,7 +249,7 @@ export default function CodeEditor({
           {!readOnly && onSave && (
             <button
               onClick={handleSave}
-              className="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium flex items-center gap-1.5 transition-all shadow-sm"
+              className="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-medium flex items-center gap-1.5 transition-colors shadow-xs"
               title="Save code snapshot"
             >
               <Save className="h-3.5 w-3.5" />
@@ -260,7 +260,7 @@ export default function CodeEditor({
           <button
             onClick={handleRunSimulation}
             disabled={isRunning}
-            className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium flex items-center gap-1.5 transition-all shadow-sm disabled:opacity-50"
+            className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium flex items-center gap-1.5 transition-colors shadow-xs disabled:opacity-50"
             title="Verify syntax and simulate logic"
           >
             <Play className={`h-3.5 w-3.5 ${isRunning ? 'animate-spin' : ''}`} />
@@ -320,9 +320,9 @@ export default function CodeEditor({
       )}
 
       {/* Editor Body: Line numbers + Monospace Textarea */}
-      <div className="relative flex flex-1 min-h-[340px] max-h-[460px] font-mono text-sm overflow-hidden bg-slate-950">
+      <div className="relative flex flex-1 min-h-[340px] max-h-[460px] font-mono text-sm overflow-hidden bg-[#0f172a]">
         {/* Line Numbers Column */}
-        <div className="w-12 bg-slate-900/60 border-r border-slate-800/80 text-slate-400 select-none text-right pr-3 pt-3 text-xs leading-6 overflow-hidden">
+        <div className="w-12 bg-[#0b1120] border-r border-slate-800/80 text-slate-500 select-none text-right pr-3 pt-3 text-xs leading-6 overflow-hidden">
           {lineNumbers.map(n => (
             <div key={n}>{n}</div>
           ))}
@@ -335,30 +335,30 @@ export default function CodeEditor({
           onKeyDown={handleKeyDown}
           readOnly={readOnly}
           spellCheck={false}
-          className="flex-1 p-3 bg-transparent text-slate-100 font-mono text-xs sm:text-sm leading-6 resize-none focus:outline-none overflow-y-auto selection:bg-indigo-700/60"
+          className="flex-1 p-3 bg-transparent text-slate-100 font-mono text-xs sm:text-sm leading-6 resize-none focus:outline-none overflow-y-auto selection:bg-blue-600/30"
           placeholder="// Type or paste your STEM project code here..."
         />
       </div>
 
       {/* Output Console / Hardware Notice */}
-      <div className="border-t border-slate-800 bg-slate-900/90 p-3">
+      <div className="border-t border-slate-800 bg-[#0b1120] p-3">
         <div className="flex items-center justify-between mb-1.5 text-xs">
           <div className="flex items-center gap-1.5 text-slate-300 font-medium">
-            <Terminal className="h-3.5 w-3.5 text-cyan-400" />
+            <Terminal className="h-3.5 w-3.5 text-blue-400" />
             <span>Execution Console & Diagnostics</span>
           </div>
           <div className="flex items-center gap-1 text-[11px] text-slate-400">
             <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
-            <span>Isolated Safe Client Sandbox</span>
+            <span>Safe Client Sandbox</span>
           </div>
         </div>
 
-        <pre className="bg-slate-950 border border-slate-800/80 rounded-xl p-3 text-xs font-mono text-emerald-400 whitespace-pre-wrap max-h-36 overflow-y-auto">
+        <pre className="bg-[#070b14] border border-slate-800/80 rounded-xl p-3 text-xs font-mono text-emerald-400 whitespace-pre-wrap max-h-36 overflow-y-auto">
           {output}
         </pre>
 
         <div className="mt-2 flex items-start gap-1.5 text-[11px] text-slate-400">
-          <Info className="h-3.5 w-3.5 text-indigo-400 flex-shrink-0 mt-0.5" />
+          <Info className="h-3.5 w-3.5 text-blue-400 flex-shrink-0 mt-0.5" />
           <span>
             Physical hardware: To flash compiled sketches onto physical Arduino, ESP32, or Raspberry Pi boards, use &quot;Download Code&quot; and open in the Arduino IDE or connect via KITE USB Bridge.
           </span>

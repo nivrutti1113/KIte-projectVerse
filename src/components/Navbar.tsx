@@ -7,12 +7,6 @@ import { useAuth } from '@/lib/auth-context';
 import { UserRole } from '@/types';
 import { 
   Bot, 
-  Cpu, 
-  BookOpen, 
-  Briefcase, 
-  Send, 
-  Award, 
-  ShieldAlert, 
   Bell, 
   Menu, 
   X, 
@@ -21,17 +15,20 @@ import {
   Settings,
   Sparkles,
   School,
-  CheckCircle2
+  CheckCircle2,
+  ShieldAlert,
+  ArrowRight
 } from 'lucide-react';
 import { getNotifications, markNotificationAsRead } from '@/lib/data';
 import { InAppNotification } from '@/types';
 
 export default function Navbar() {
-  const { user, role, switchRole, logout, isAuthenticated } = useAuth();
+  const { user, role, switchRole, logout } = useAuth();
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
-  const [roleMenuOpen, setRoleMenuOpen] = useState(false);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [roleSwitcherOpen, setRoleSwitcherOpen] = useState(false);
   const [notifications, setNotifications] = useState<InAppNotification[]>([]);
 
   useEffect(() => {
@@ -47,46 +44,62 @@ export default function Navbar() {
     setNotifications(prev => prev.map(n => n.id === id ? { ...n, is_read: true } : n));
   };
 
-  const rolesList: { role: UserRole; label: string; icon: string; desc: string }[] = [
-    { role: 'student', label: 'Student Maker', icon: '🎓', desc: 'Aarav Sharma (Class 8)' },
-    { role: 'teacher', label: 'Teacher / Mentor', icon: '👩‍🏫', desc: 'Priya Raman (Robotics Faculty)' },
-    { role: 'school_admin', label: 'School Admin', icon: '🏫', desc: 'Vikram Seth (Principal)' },
-    { role: 'admin', label: 'KITE Admin', icon: '⚡', desc: 'Central Platform Administrator' }
+  const rolesList: { role: UserRole; title: string; badge: string; desc: string }[] = [
+    { role: 'student', title: 'Student Maker', badge: 'Class 8', desc: 'Aarav Sharma • Hands-on builder' },
+    { role: 'teacher', title: 'Teacher / Mentor', badge: 'Faculty', desc: 'Priya Raman • Reviews & Rubrics' },
+    { role: 'school_admin', title: 'School Administrator', badge: 'Admin', desc: 'Vikram Seth • Principal & Rosters' },
+    { role: 'admin', title: 'Platform Admin', badge: 'KITE HQ', desc: 'Central Platform & Curriculum' }
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-slate-900 border-b border-slate-800 text-white backdrop-blur-md bg-opacity-95 shadow-md">
-      {/* Top Banner: Role switcher bar */}
-      <div className="bg-indigo-950/80 border-b border-indigo-900/50 px-4 py-1.5 text-xs text-indigo-200 flex flex-wrap items-center justify-between gap-2">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-xs">
+      {/* Sleek Top Utility Bar */}
+      <div className="bg-slate-900 text-slate-300 px-4 sm:px-6 lg:px-8 py-1.5 text-xs flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="font-medium">Active Session:</span>
-          <span className="bg-indigo-800/80 text-indigo-100 px-2 py-0.5 rounded font-mono font-semibold">
-            {user?.full_name || 'Guest'} ({role.toUpperCase()})
-          </span>
-          <span className="hidden md:inline text-indigo-300">
-            • {user?.school_name || 'Independent Maker'}
-          </span>
+          <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+          <span className="text-slate-400 font-medium">Logged in as:</span>
+          <span className="text-white font-semibold">{user?.full_name || 'Aarav Sharma'}</span>
+          <span className="text-slate-400 hidden sm:inline">•</span>
+          <span className="text-slate-400 hidden sm:inline">{user?.school_name || 'Independent Maker'}</span>
         </div>
 
-        {/* Quick Role Switcher Buttons */}
-        <div className="flex items-center gap-1.5">
-          <span className="hidden sm:inline text-indigo-300">Demo Role:</span>
-          <div className="flex gap-1 bg-indigo-900/70 p-0.5 rounded-lg border border-indigo-700/50">
-            {rolesList.map(r => (
-              <button
-                key={r.role}
-                onClick={() => switchRole(r.role)}
-                title={r.desc}
-                className={`px-2 py-0.5 rounded text-[11px] font-medium transition-all ${
-                  role === r.role
-                    ? 'bg-indigo-600 text-white shadow-sm'
-                    : 'text-indigo-200 hover:bg-indigo-800/60'
-                }`}
-              >
-                {r.icon} {r.label.split(' ')[0]}
-              </button>
-            ))}
+        {/* Professional Segmented Persona Selector */}
+        <div className="flex items-center gap-2">
+          <span className="text-slate-400 hidden md:inline text-[11px]">Active Persona:</span>
+          <div className="relative">
+            <button
+              onClick={() => setRoleSwitcherOpen(!roleSwitcherOpen)}
+              className="flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-white px-2.5 py-1 rounded-md text-[11px] font-medium border border-slate-700 transition-colors"
+            >
+              <span className="capitalize">{role.replace('_', ' ')}</span>
+              <ChevronDown className="h-3 w-3 text-slate-400" />
+            </button>
+
+            {roleSwitcherOpen && (
+              <div className="absolute right-0 mt-1 w-64 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 animate-in fade-in zoom-in-95 duration-100 text-slate-900">
+                <div className="px-3 py-1.5 text-[10px] uppercase font-bold text-slate-400 tracking-wider border-b border-slate-100">
+                  Switch Demonstration Persona
+                </div>
+                {rolesList.map(r => (
+                  <button
+                    key={r.role}
+                    onClick={() => {
+                      switchRole(r.role);
+                      setRoleSwitcherOpen(false);
+                    }}
+                    className={`w-full text-left px-3 py-2 flex items-start justify-between gap-2 hover:bg-slate-50 transition-colors ${
+                      role === r.role ? 'bg-blue-50/70 text-blue-700 font-semibold' : 'text-slate-700'
+                    }`}
+                  >
+                    <div>
+                      <div className="text-xs font-semibold">{r.title}</div>
+                      <div className="text-[11px] text-slate-500">{r.desc}</div>
+                    </div>
+                    {role === r.role && <CheckCircle2 className="h-4 w-4 text-blue-600 flex-shrink-0 mt-0.5" />}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -94,17 +107,17 @@ export default function Navbar() {
       {/* Main Navigation Bar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo & Brand */}
+          {/* Brand Logo */}
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-violet-600 to-cyan-400 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
-                <Bot className="h-6 w-6" />
+              <div className="h-9 w-9 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-sm shadow-blue-500/20 group-hover:bg-blue-700 transition-colors">
+                <Bot className="h-5 w-5" />
               </div>
               <div className="flex flex-col">
-                <span className="font-bold text-lg tracking-tight bg-gradient-to-r from-white via-slate-100 to-indigo-200 bg-clip-text text-transparent">
-                  KITE <span className="text-cyan-400 font-extrabold">ProjectVerse</span>
+                <span className="font-extrabold text-base sm:text-lg tracking-tight text-slate-900 leading-none">
+                  KITE <span className="text-blue-600 font-bold">ProjectVerse</span>
                 </span>
-                <span className="text-[10px] text-slate-400 tracking-wider uppercase font-medium">
+                <span className="text-[10px] text-slate-500 tracking-wide font-medium mt-0.5">
                   STEM Hands-on Platform
                 </span>
               </div>
@@ -114,10 +127,10 @@ export default function Navbar() {
             <nav className="hidden md:flex items-center gap-1 ml-8">
               <Link
                 href="/projects"
-                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   pathname.startsWith('/projects')
-                    ? 'bg-slate-800 text-cyan-400 font-semibold'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                    ? 'text-blue-600 bg-blue-50/80 font-semibold'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
                 }`}
               >
                 Project Catalog
@@ -127,40 +140,40 @@ export default function Navbar() {
                 <>
                   <Link
                     href="/dashboard"
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       pathname === '/dashboard'
-                        ? 'bg-slate-800 text-cyan-400 font-semibold'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                        ? 'text-blue-600 bg-blue-50/80 font-semibold'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
                     }`}
                   >
                     My Dashboard
                   </Link>
                   <Link
                     href="/my-projects"
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       pathname === '/my-projects'
-                        ? 'bg-slate-800 text-cyan-400 font-semibold'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                        ? 'text-blue-600 bg-blue-50/80 font-semibold'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
                     }`}
                   >
                     My Projects
                   </Link>
                   <Link
                     href="/submissions"
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       pathname === '/submissions'
-                        ? 'bg-slate-800 text-cyan-400 font-semibold'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                        ? 'text-blue-600 bg-blue-50/80 font-semibold'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
                     }`}
                   >
                     Submissions
                   </Link>
                   <Link
                     href={`/portfolio/${user?.username || 'aarav_maker'}`}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       pathname.startsWith('/portfolio')
-                        ? 'bg-slate-800 text-cyan-400 font-semibold'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                        ? 'text-blue-600 bg-blue-50/80 font-semibold'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
                     }`}
                   >
                     Portfolio
@@ -172,43 +185,43 @@ export default function Navbar() {
                 <>
                   <Link
                     href="/teacher/dashboard"
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       pathname === '/teacher/dashboard'
-                        ? 'bg-slate-800 text-cyan-400 font-semibold'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                        ? 'text-blue-600 bg-blue-50/80 font-semibold'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
                     }`}
                   >
                     Teacher Portal
                   </Link>
                   <Link
                     href="/teacher/classes"
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       pathname === '/teacher/classes'
-                        ? 'bg-slate-800 text-cyan-400 font-semibold'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                        ? 'text-blue-600 bg-blue-50/80 font-semibold'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
                     }`}
                   >
                     Classes
                   </Link>
                   <Link
                     href="/teacher/assignments"
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       pathname === '/teacher/assignments'
-                        ? 'bg-slate-800 text-cyan-400 font-semibold'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                        ? 'text-blue-600 bg-blue-50/80 font-semibold'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
                     }`}
                   >
                     Assignments
                   </Link>
                   <Link
                     href="/teacher/reviews"
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       pathname === '/teacher/reviews'
-                        ? 'bg-slate-800 text-cyan-400 font-semibold'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                        ? 'text-blue-600 bg-blue-50/80 font-semibold'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
                     }`}
                   >
-                    Submission Reviews
+                    Rubric Reviews
                   </Link>
                 </>
               )}
@@ -217,43 +230,43 @@ export default function Navbar() {
                 <>
                   <Link
                     href="/school/dashboard"
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       pathname === '/school/dashboard'
-                        ? 'bg-slate-800 text-cyan-400 font-semibold'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                        ? 'text-blue-600 bg-blue-50/80 font-semibold'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
                     }`}
                   >
                     School Overview
                   </Link>
                   <Link
                     href="/school/students"
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       pathname === '/school/students'
-                        ? 'bg-slate-800 text-cyan-400 font-semibold'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                        ? 'text-blue-600 bg-blue-50/80 font-semibold'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
                     }`}
                   >
                     Students
                   </Link>
                   <Link
                     href="/school/teachers"
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       pathname === '/school/teachers'
-                        ? 'bg-slate-800 text-cyan-400 font-semibold'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                        ? 'text-blue-600 bg-blue-50/80 font-semibold'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
                     }`}
                   >
-                    Teachers
+                    Faculty
                   </Link>
                   <Link
                     href="/school/reports"
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       pathname === '/school/reports'
-                        ? 'bg-slate-800 text-cyan-400 font-semibold'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                        ? 'text-blue-600 bg-blue-50/80 font-semibold'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
                     }`}
                   >
-                    Analytics & Reports
+                    ATL Reports
                   </Link>
                 </>
               )}
@@ -262,40 +275,40 @@ export default function Navbar() {
                 <>
                   <Link
                     href="/admin"
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       pathname === '/admin'
-                        ? 'bg-slate-800 text-cyan-400 font-semibold'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                        ? 'text-blue-600 bg-blue-50/80 font-semibold'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
                     }`}
                   >
                     Admin Hub
                   </Link>
                   <Link
                     href="/admin/projects"
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       pathname === '/admin/projects'
-                        ? 'bg-slate-800 text-cyan-400 font-semibold'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                        ? 'text-blue-600 bg-blue-50/80 font-semibold'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
                     }`}
                   >
-                    Manage Projects
+                    Catalog Admin
                   </Link>
                   <Link
                     href="/admin/schools"
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       pathname === '/admin/schools'
-                        ? 'bg-slate-800 text-cyan-400 font-semibold'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                        ? 'text-blue-600 bg-blue-50/80 font-semibold'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
                     }`}
                   >
-                    Schools & Tenants
+                    Schools
                   </Link>
                   <Link
                     href="/admin/audit-logs"
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       pathname === '/admin/audit-logs'
-                        ? 'bg-slate-800 text-cyan-400 font-semibold'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                        ? 'text-blue-600 bg-blue-50/80 font-semibold'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
                     }`}
                   >
                     Audit Logs
@@ -305,39 +318,39 @@ export default function Navbar() {
             </nav>
           </div>
 
-          {/* Right Action Buttons */}
+          {/* Right Action Icons & Profile */}
           <div className="flex items-center gap-3">
             <Link
               href="/pricing"
-              className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30 transition-all"
+              className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 transition-colors"
             >
-              <Sparkles className="h-3.5 w-3.5" />
-              Plans & Pricing
+              <Sparkles className="h-3.5 w-3.5 text-blue-600" />
+              Plans
             </Link>
 
             {/* Notifications Dropdown */}
             <div className="relative">
               <button
                 onClick={() => setNotificationsOpen(!notificationsOpen)}
-                className="relative p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
+                className="relative p-2 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
                 aria-label="Notifications"
               >
                 <Bell className="h-5 w-5" />
                 {unreadCount > 0 && (
-                  <span className="absolute top-1 right-1 h-4 w-4 rounded-full bg-cyan-500 text-[10px] font-bold text-slate-950 flex items-center justify-center animate-bounce">
+                  <span className="absolute top-1 right-1 h-4 w-4 rounded-full bg-blue-600 text-[10px] font-bold text-white flex items-center justify-center">
                     {unreadCount}
                   </span>
                 )}
               </button>
 
               {notificationsOpen && (
-                <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl p-4 z-50 animate-in fade-in zoom-in-95 duration-150">
-                  <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-                    <span className="font-semibold text-sm text-white">In-App Notifications</span>
-                    <span className="text-xs text-cyan-400">{unreadCount} unread</span>
+                <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white border border-slate-200 rounded-2xl shadow-2xl p-4 z-50 animate-in fade-in zoom-in-95 duration-100">
+                  <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                    <span className="font-bold text-sm text-slate-900">Notifications</span>
+                    <span className="text-xs text-blue-600 font-medium">{unreadCount} unread</span>
                   </div>
 
-                  <div className="divide-y divide-slate-800 max-h-72 overflow-y-auto mt-2 space-y-1">
+                  <div className="divide-y divide-slate-100 max-h-72 overflow-y-auto mt-2">
                     {notifications.length === 0 ? (
                       <p className="text-xs text-slate-400 text-center py-6">No notifications yet.</p>
                     ) : (
@@ -345,26 +358,26 @@ export default function Navbar() {
                         <div
                           key={n.id}
                           className={`py-2.5 px-2 rounded-lg transition-colors ${
-                            n.is_read ? 'opacity-70 bg-transparent' : 'bg-slate-800/60'
+                            n.is_read ? 'opacity-70 bg-transparent' : 'bg-blue-50/50'
                           }`}
                         >
                           <div className="flex items-start justify-between gap-2">
-                            <span className="font-medium text-xs text-white">{n.title}</span>
+                            <span className="font-semibold text-xs text-slate-900">{n.title}</span>
                             {!n.is_read && (
                               <button
                                 onClick={() => handleMarkAsRead(n.id)}
-                                className="text-[10px] text-cyan-400 hover:underline flex items-center gap-0.5"
+                                className="text-[10px] text-blue-600 hover:underline flex items-center gap-0.5"
                               >
-                                <CheckCircle2 className="h-3 w-3" /> Read
+                                Mark Read
                               </button>
                             )}
                           </div>
-                          <p className="text-xs text-slate-300 mt-1">{n.message}</p>
+                          <p className="text-xs text-slate-600 mt-1">{n.message}</p>
                           {n.link && (
                             <Link
                               href={n.link}
                               onClick={() => setNotificationsOpen(false)}
-                              className="text-[11px] text-indigo-400 hover:text-indigo-300 font-medium inline-block mt-1"
+                              className="text-[11px] text-blue-600 font-semibold hover:underline inline-block mt-1"
                             >
                               View details →
                             </Link>
@@ -380,60 +393,62 @@ export default function Navbar() {
             {/* User Profile Avatar & Dropdown */}
             <div className="relative">
               <button
-                onClick={() => setRoleMenuOpen(!roleMenuOpen)}
-                className="flex items-center gap-2 p-1.5 rounded-xl hover:bg-slate-800 border border-transparent hover:border-slate-700 transition-all"
+                onClick={() => setProfileMenuOpen(!profileMenuOpen)}
+                className="flex items-center gap-2 p-1.5 rounded-xl hover:bg-slate-100 border border-transparent hover:border-slate-200 transition-all"
               >
-                <div className="h-8 w-8 rounded-full overflow-hidden bg-indigo-600 flex items-center justify-center text-xs font-bold text-white border border-indigo-400">
+                <div className="h-8 w-8 rounded-full overflow-hidden bg-blue-600 flex items-center justify-center text-xs font-bold text-white shadow-xs">
                   {user?.avatar_url ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={user.avatar_url} alt={user.full_name} className="h-full w-full object-cover" />
                   ) : (
-                    user?.full_name?.charAt(0) || 'U'
+                    user?.full_name?.charAt(0) || 'A'
                   )}
                 </div>
                 <div className="hidden sm:flex flex-col text-left">
-                  <span className="text-xs font-semibold text-white leading-tight">
-                    {user?.full_name || 'Student'}
+                  <span className="text-xs font-semibold text-slate-900 leading-tight">
+                    {user?.full_name || 'Aarav Sharma'}
                   </span>
-                  <span className="text-[10px] text-cyan-400 font-mono capitalize">
+                  <span className="text-[10px] text-slate-500 capitalize">
                     {role.replace('_', ' ')}
                   </span>
                 </div>
                 <ChevronDown className="h-4 w-4 text-slate-400" />
               </button>
 
-              {roleMenuOpen && (
-                <div className="absolute right-0 mt-2 w-56 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl p-2 z-50">
-                  <div className="px-3 py-2 border-b border-slate-800">
-                    <p className="text-xs font-bold text-white">{user?.full_name}</p>
-                    <p className="text-[11px] text-slate-400 truncate">{user?.email}</p>
-                    <p className="text-[10px] text-cyan-400 font-mono mt-0.5 capitalize">{role} Account</p>
+              {profileMenuOpen && (
+                <div className="absolute right-0 mt-2 w-56 bg-white border border-slate-200 rounded-xl shadow-xl p-2 z-50 text-slate-900 animate-in fade-in zoom-in-95 duration-100">
+                  <div className="px-3 py-2 border-b border-slate-100">
+                    <p className="text-xs font-bold text-slate-900">{user?.full_name}</p>
+                    <p className="text-[11px] text-slate-500 truncate">{user?.email}</p>
+                    <span className="inline-block mt-1 text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+                      {role.replace('_', ' ')}
+                    </span>
                   </div>
 
                   <div className="py-1">
                     <Link
                       href="/settings"
-                      onClick={() => setRoleMenuOpen(false)}
-                      className="flex items-center gap-2 px-3 py-2 text-xs text-slate-300 hover:bg-slate-800 rounded-lg transition-colors"
+                      onClick={() => setProfileMenuOpen(false)}
+                      className="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
                     >
-                      <Settings className="h-4 w-4 text-slate-400" /> Account Settings
+                      <Settings className="h-4 w-4 text-slate-500" /> Account Settings
                     </Link>
                     <Link
                       href="/privacy"
-                      onClick={() => setRoleMenuOpen(false)}
-                      className="flex items-center gap-2 px-3 py-2 text-xs text-slate-300 hover:bg-slate-800 rounded-lg transition-colors"
+                      onClick={() => setProfileMenuOpen(false)}
+                      className="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
                     >
-                      <ShieldAlert className="h-4 w-4 text-slate-400" /> Privacy & DPDP Notice
+                      <ShieldAlert className="h-4 w-4 text-slate-500" /> DPDP Privacy Notice
                     </Link>
                   </div>
 
-                  <div className="pt-1 border-t border-slate-800">
+                  <div className="pt-1 border-t border-slate-100">
                     <button
                       onClick={() => {
                         logout();
-                        setRoleMenuOpen(false);
+                        setProfileMenuOpen(false);
                       }}
-                      className="w-full flex items-center gap-2 px-3 py-2 text-xs text-rose-400 hover:bg-rose-950/40 rounded-lg transition-colors"
+                      className="w-full flex items-center gap-2 px-3 py-2 text-xs text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
                     >
                       <LogOut className="h-4 w-4" /> Sign Out
                     </button>
@@ -445,7 +460,7 @@ export default function Navbar() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800"
+              className="md:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100"
               aria-label="Toggle Navigation Menu"
             >
               {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -456,11 +471,11 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-slate-900 border-b border-slate-800 px-4 pt-2 pb-6 space-y-2">
+        <div className="md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-6 space-y-1.5 text-slate-900">
           <Link
             href="/projects"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800"
+            className="block px-3 py-2 rounded-lg text-sm font-medium hover:bg-slate-50"
           >
             Project Catalog
           </Link>
@@ -470,28 +485,28 @@ export default function Navbar() {
               <Link
                 href="/dashboard"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800"
+                className="block px-3 py-2 rounded-lg text-sm font-medium hover:bg-slate-50"
               >
                 My Dashboard
               </Link>
               <Link
                 href="/my-projects"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800"
+                className="block px-3 py-2 rounded-lg text-sm font-medium hover:bg-slate-50"
               >
                 My Projects
               </Link>
               <Link
                 href="/submissions"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800"
+                className="block px-3 py-2 rounded-lg text-sm font-medium hover:bg-slate-50"
               >
                 Submissions
               </Link>
               <Link
                 href={`/portfolio/${user?.username || 'aarav_maker'}`}
                 onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800"
+                className="block px-3 py-2 rounded-lg text-sm font-medium hover:bg-slate-50"
               >
                 Maker Portfolio
               </Link>
@@ -503,30 +518,30 @@ export default function Navbar() {
               <Link
                 href="/teacher/dashboard"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800"
+                className="block px-3 py-2 rounded-lg text-sm font-medium hover:bg-slate-50"
               >
                 Teacher Dashboard
               </Link>
               <Link
                 href="/teacher/classes"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800"
+                className="block px-3 py-2 rounded-lg text-sm font-medium hover:bg-slate-50"
               >
                 Classes
               </Link>
               <Link
                 href="/teacher/assignments"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800"
+                className="block px-3 py-2 rounded-lg text-sm font-medium hover:bg-slate-50"
               >
                 Assignments
               </Link>
               <Link
                 href="/teacher/reviews"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800"
+                className="block px-3 py-2 rounded-lg text-sm font-medium hover:bg-slate-50"
               >
-                Submission Reviews
+                Rubric Reviews
               </Link>
             </>
           )}
@@ -536,23 +551,23 @@ export default function Navbar() {
               <Link
                 href="/school/dashboard"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800"
+                className="block px-3 py-2 rounded-lg text-sm font-medium hover:bg-slate-50"
               >
                 School Dashboard
               </Link>
               <Link
                 href="/school/students"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800"
+                className="block px-3 py-2 rounded-lg text-sm font-medium hover:bg-slate-50"
               >
-                Students Directory
+                Students Roster
               </Link>
               <Link
                 href="/school/reports"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800"
+                className="block px-3 py-2 rounded-lg text-sm font-medium hover:bg-slate-50"
               >
-                School Analytics
+                ATL Analytics
               </Link>
             </>
           )}
@@ -562,32 +577,25 @@ export default function Navbar() {
               <Link
                 href="/admin"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800"
+                className="block px-3 py-2 rounded-lg text-sm font-medium hover:bg-slate-50"
               >
-                Admin Dashboard
+                Admin Hub
               </Link>
               <Link
                 href="/admin/projects"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800"
+                className="block px-3 py-2 rounded-lg text-sm font-medium hover:bg-slate-50"
               >
-                Manage Projects
-              </Link>
-              <Link
-                href="/admin/schools"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-800"
-              >
-                Schools & Tenants
+                Catalog Management
               </Link>
             </>
           )}
 
-          <div className="pt-3 border-t border-slate-800">
+          <div className="pt-2 border-t border-slate-100">
             <Link
               href="/pricing"
               onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-lg text-sm font-semibold text-amber-300 hover:bg-slate-800"
+              className="block px-3 py-2 rounded-lg text-sm font-semibold text-blue-600 hover:bg-blue-50"
             >
               Plans & Pricing
             </Link>
