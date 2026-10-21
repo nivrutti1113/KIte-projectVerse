@@ -84,6 +84,16 @@ export interface ProjectComponent {
   purchase_url?: string;
 }
 
+export interface WiringConnection {
+  from_component: string;
+  from_pin: string;
+  to_component: string;
+  to_pin: string;
+  wire_color: 'red' | 'black' | 'blue' | 'green' | 'yellow' | 'orange' | 'purple' | 'white';
+  signal_type: 'power' | 'ground' | 'digital' | 'analog' | 'pwm' | 'i2c' | 'spi';
+  description: string;
+}
+
 export interface ProjectStep {
   id: string;
   project_id: string;
@@ -93,6 +103,8 @@ export interface ProjectStep {
   media_url?: string;
   code_snippet?: string;
   tips?: string;
+  wiring_connections?: WiringConnection[];
+  diagram_focus?: string;
 }
 
 export interface Project {
@@ -122,6 +134,8 @@ export interface Project {
   author_name?: string;
   components?: ProjectComponent[];
   steps?: ProjectStep[];
+  wiring_connections?: WiringConnection[];
+  circuit_schematic_type?: 'arduino_robot' | 'smart_plant' | 'solar_tracker' | 'iot_esp32' | 'ai_camera' | 'smart_home';
   created_at: string;
   updated_at: string;
 }

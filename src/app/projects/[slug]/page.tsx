@@ -14,8 +14,10 @@ import {
   AlertTriangle, 
   FileCode2, 
   Sparkles,
-  Bot
+  Bot,
+  Zap
 } from 'lucide-react';
+import CircuitDiagram from '@/components/CircuitDiagram';
 
 export async function generateStaticParams() {
   const projects = await getProjects();
@@ -184,6 +186,25 @@ export default async function ProjectDetailPage({
               ))}
             </div>
           </section>
+
+          {/* Visual Circuit Schematic & Wiring Guide */}
+          {project.wiring_connections && project.wiring_connections.length > 0 && (
+            <section className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                  <Zap className="h-5 w-5 text-amber-500" /> Complete Hardware Circuit Schematic
+                </h2>
+                <span className="text-xs text-blue-600 font-semibold">
+                  {project.wiring_connections.length} Pinout Connections
+                </span>
+              </div>
+              <CircuitDiagram
+                projectTitle={project.title}
+                schematicType={project.circuit_schematic_type}
+                connections={project.wiring_connections}
+              />
+            </section>
+          )}
 
           {/* Troubleshooting Guide */}
           {project.troubleshooting_guide && project.troubleshooting_guide.length > 0 && (

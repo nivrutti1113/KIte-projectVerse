@@ -13,6 +13,8 @@ import {
 import { Project, StudentProject } from '@/types';
 import CodeEditor from '@/components/CodeEditor';
 import AIMentorModal from '@/components/AIMentorModal';
+import CircuitDiagram from '@/components/CircuitDiagram';
+import HardwareSimulator from '@/components/HardwareSimulator';
 import { 
   Bot, 
   CheckCircle2, 
@@ -29,7 +31,11 @@ import {
   Video,
   Clock,
   CheckSquare,
-  Square
+  Square,
+  Zap,
+  Play,
+  Code2,
+  Sliders
 } from 'lucide-react';
 
 function WorkspaceInner({ id }: { id: string }) {
@@ -39,6 +45,7 @@ function WorkspaceInner({ id }: { id: string }) {
   const [project, setProject] = useState<Project | null>(null);
   const [studentProject, setStudentProject] = useState<StudentProject | null>(null);
   const [activeStep, setActiveStep] = useState(1);
+  const [studioMode, setStudioMode] = useState<'circuit' | 'simulator' | 'code' | 'components'>('circuit');
   const [activeTab, setActiveTab] = useState<'instructions' | 'components' | 'notes'>('instructions');
   const [checkedComponents, setCheckedComponents] = useState<Record<string, boolean>>({});
   const [notes, setNotes] = useState('');
@@ -236,7 +243,67 @@ function WorkspaceInner({ id }: { id: string }) {
         </div>
       </div>
 
-      {/* Main Studio Work Area: Split Left (Guide & Checklist) & Right (Code & Console) */}
+      {/* Studio Interactive Mode Selector Strip */}
+      <div className="bg-slate-50 border-b border-slate-200 px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs sticky top-[73px] z-20">
+        <div className="flex items-center gap-1.5 p-1 bg-white border border-slate-200 rounded-xl shadow-2xs">
+          <button
+            onClick={() => setStudioMode('circuit')}
+            className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition-all ${
+              studioMode === 'circuit'
+                ? 'bg-blue-600 text-white shadow-xs'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+            }`}
+          >
+            <Zap className="h-3.5 w-3.5" />
+            <span>Visual Circuit & Wiring</span>
+          </button>
+
+          <button
+            onClick={() => setStudioMode('simulator')}
+            className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition-all ${
+              studioMode === 'simulator'
+                ? 'bg-blue-600 text-white shadow-xs'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+            }`}
+          >
+            <Play className="h-3.5 w-3.5" />
+            <span>Hardware Simulator</span>
+          </button>
+
+          <button
+            onClick={() => setStudioMode('code')}
+            className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition-all ${
+              studioMode === 'code'
+                ? 'bg-blue-600 text-white shadow-xs'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+            }`}
+          >
+            <Code2 className="h-3.5 w-3.5" />
+            <span>Firmware & Code</span>
+          </button>
+
+          <button
+            onClick={() => setStudioMode('components')}
+            className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition-all ${
+              studioMode === 'components'
+                ? 'bg-blue-600 text-white shadow-xs'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+            }`}
+          >
+            <Layers className="h-3.5 w-3.5" />
+            <span>Physical Kit ({Object.values(checkedComponents).filter(Boolean).length}/{project.components?.length || 0})</span>
+          </button>
+        </div>
+
+        <div className="flex items-center gap-2 text-slate-500 text-[11px]">
+          <span className="hidden md:inline">Hardware Mode:</span>
+          <span className="font-semibold text-slate-900 capitalize px-2 py-0.5 rounded-md bg-slate-200/70">
+            {studioMode.replace('_', ' ')} View
+          </span>
+        </div>
+      </div>
+
+      {/* Main Studio Work Area: Split Left (Guide & Checklist) & Right (Circuit / Simulator / Code) */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-0 overflow-hidden">
         {/* Left Side: Step Guide & Notes (5 cols) */}
         <div className="lg:col-span-5 border-r border-slate-200 flex flex-col bg-white overflow-y-auto max-h-[calc(100vh-8.5rem)]">
@@ -423,14 +490,85 @@ function WorkspaceInner({ id }: { id: string }) {
           </div>
         </div>
 
-        {/* Right Side: Code Editor & Sandboxed Diagnostics (7 cols) */}
-        <div className="lg:col-span-7 flex flex-col p-4 bg-slate-100/70 overflow-y-auto">
-          <CodeEditor
-            initialCode={studentProject.active_code}
-            language={studentProject.active_language}
-            starterCode={project.starter_code}
-            onSave={handleSaveCode}
-          />
+        {/* Right Side: Dynamic Interactive Studio Workspace based on studioMode */}
+        <div className="lg:col-span-7 flex flex-col p-4 bg-slate-100/70 overflow-y-auto max-h-[calc(100vh-10rem)]">
+          {studioMode === 'circuit' && (
+            <div className="space-y-4">
+              <CircuitDiagram
+                projectTitle={project.title}
+                schematicType={project.circuit_schematic_type}
+                activeStep={activeStep}
+                connections={project.wiring_connections || []}
+              />
+            </div>
+          )}
+
+          {studioMode === 'simulator' && (
+            <div className="space-y-4">
+              <HardwareSimulator
+                projectId={project.id}
+                projectTitle={project.title}
+              />
+            </div>
+          )}
+
+          {studioMode === 'code' && (
+            <CodeEditor
+              initialCode={studentProject.active_code}
+              language={studentProject.active_language}
+              starterCode={project.starter_code}
+              onSave={handleSaveCode}
+            />
+          )}
+
+          {studioMode === 'components' && (
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                    <Layers className="h-4 w-4 text-blue-600" /> Physical Hardware Kit Checklist
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Verify each physical component from your KITE STEM kit before starting assembly.
+                  </p>
+                </div>
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                  {Object.values(checkedComponents).filter(Boolean).length} / {project.components?.length || 0} Checked
+                </span>
+              </div>
+
+              <div className="divide-y divide-slate-100">
+                {project.components?.map(c => (
+                  <div
+                    key={c.id}
+                    onClick={() => toggleComponent(c.id)}
+                    className="py-3 flex items-start gap-3 cursor-pointer hover:bg-slate-50 rounded-xl px-2 transition-colors"
+                  >
+                    <div className="mt-0.5 text-blue-600 flex-shrink-0">
+                      {checkedComponents[c.id] ? (
+                        <CheckSquare className="h-4 w-4 text-emerald-600" />
+                      ) : (
+                        <Square className="h-4 w-4 text-slate-400" />
+                      )}
+                    </div>
+                    <div className="flex-1 text-xs">
+                      <div className="flex items-center justify-between">
+                        <span className={`font-semibold ${checkedComponents[c.id] ? 'line-through text-slate-400' : 'text-slate-900'}`}>
+                          {c.name}
+                        </span>
+                        <span className="font-mono text-slate-500 font-bold bg-slate-100 px-2 py-0.5 rounded text-[11px]">
+                          x{c.quantity}
+                        </span>
+                      </div>
+                      {c.description && (
+                        <p className="text-[11px] text-slate-500 mt-0.5">{c.description}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

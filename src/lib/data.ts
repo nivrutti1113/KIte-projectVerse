@@ -155,6 +155,19 @@ void loop() {
     access_tier: 'free',
     is_published: true,
     is_featured: true,
+    circuit_schematic_type: 'arduino_robot',
+    wiring_connections: [
+      { from_component: 'Arduino Uno', from_pin: 'D9', to_component: 'HC-SR04 Sonar', to_pin: 'TRIG', wire_color: 'blue', signal_type: 'digital', description: 'Triggers 10µs ultrasonic pulse' },
+      { from_component: 'Arduino Uno', from_pin: 'D10', to_component: 'HC-SR04 Sonar', to_pin: 'ECHO', wire_color: 'green', signal_type: 'digital', description: 'Receives reflected soundwave pulse duration' },
+      { from_component: 'Arduino Uno', from_pin: '5V', to_component: 'HC-SR04 Sonar', to_pin: 'VCC', wire_color: 'red', signal_type: 'power', description: '5V Regulated Logic Power' },
+      { from_component: 'Arduino Uno', from_pin: 'GND', to_component: 'HC-SR04 Sonar', to_pin: 'GND', wire_color: 'black', signal_type: 'ground', description: 'Sensor ground reference' },
+      { from_component: 'Arduino Uno', from_pin: 'D5', to_component: 'L298N Driver', to_pin: 'IN1', wire_color: 'yellow', signal_type: 'pwm', description: 'Left Motor Forward PWM Speed' },
+      { from_component: 'Arduino Uno', from_pin: 'D6', to_component: 'L298N Driver', to_pin: 'IN2', wire_color: 'orange', signal_type: 'pwm', description: 'Left Motor Reverse PWM Speed' },
+      { from_component: 'Arduino Uno', from_pin: 'D7', to_component: 'L298N Driver', to_pin: 'IN3', wire_color: 'yellow', signal_type: 'digital', description: 'Right Motor Forward Direction' },
+      { from_component: 'Arduino Uno', from_pin: 'D8', to_component: 'L298N Driver', to_pin: 'IN4', wire_color: 'orange', signal_type: 'digital', description: 'Right Motor Reverse Direction' },
+      { from_component: 'Battery Pack (7.4V)', from_pin: '+VCC', to_component: 'L298N Driver', to_pin: '+12V', wire_color: 'red', signal_type: 'power', description: 'High-current motor power input' },
+      { from_component: 'Arduino Uno', from_pin: 'GND', to_component: 'L298N Driver', to_pin: 'GND', wire_color: 'black', signal_type: 'ground', description: 'Crucial shared common ground' }
+    ],
     components: [
       { id: 'c1', project_id: 'proj-001', name: 'Arduino Uno R3 or compatible', quantity: 1, component_type: 'controller', description: 'ATmega328P based microcontroller board' },
       { id: 'c2', project_id: 'proj-001', name: 'L298N Dual H-Bridge Motor Driver', quantity: 1, component_type: 'hardware', description: 'Handles up to 2A per channel with onboard 5V regulator' },
@@ -292,6 +305,18 @@ void loop() {
     access_tier: 'free',
     is_published: true,
     is_featured: false,
+    circuit_schematic_type: 'smart_plant',
+    wiring_connections: [
+      { from_component: 'Arduino Uno', from_pin: 'A0', to_component: 'Soil Hygrometer', to_pin: 'SIG/Analog', wire_color: 'green', signal_type: 'analog', description: 'Reads soil conductivity resistance' },
+      { from_component: 'Arduino Uno', from_pin: '5V', to_component: 'Soil Hygrometer', to_pin: 'VCC', wire_color: 'red', signal_type: 'power', description: '5V Power for probe excitation' },
+      { from_component: 'Arduino Uno', from_pin: 'GND', to_component: 'Soil Hygrometer', to_pin: 'GND', wire_color: 'black', signal_type: 'ground', description: 'Sensor ground reference' },
+      { from_component: 'Arduino Uno', from_pin: 'D7', to_component: '5V Relay Module', to_pin: 'IN', wire_color: 'yellow', signal_type: 'digital', description: 'Active LOW relay coil trigger' },
+      { from_component: 'Arduino Uno', from_pin: '5V', to_component: '5V Relay Module', to_pin: 'VCC', wire_color: 'red', signal_type: 'power', description: 'Logic circuit power' },
+      { from_component: 'Arduino Uno', from_pin: 'GND', to_component: '5V Relay Module', to_pin: 'GND', wire_color: 'black', signal_type: 'ground', description: 'Common system ground' },
+      { from_component: '5V Battery/Adapter', from_pin: 'Positive', to_component: '5V Relay Module', to_pin: 'COM', wire_color: 'red', signal_type: 'power', description: 'Pump power common supply' },
+      { from_component: '5V Relay Module', from_pin: 'NO', to_component: 'Submersible Pump', to_pin: '+Positive', wire_color: 'blue', signal_type: 'power', description: 'Switched power to motor' },
+      { from_component: 'Submersible Pump', from_pin: '-Negative', to_component: '5V Battery/Adapter', to_pin: 'Negative', wire_color: 'black', signal_type: 'ground', description: 'Pump return ground' }
+    ],
     components: [
       { id: 'c2-1', project_id: 'proj-002', name: 'Soil Moisture Sensor Probe with Module', quantity: 1, component_type: 'sensor' },
       { id: 'c2-2', project_id: 'proj-002', name: '5V Single-Channel Relay Module', quantity: 1, component_type: 'hardware' },
@@ -498,6 +523,18 @@ void loop() {
     access_tier: 'free',
     is_published: true,
     is_featured: false,
+    circuit_schematic_type: 'smart_plant',
+    wiring_connections: [
+      { from_component: 'Arduino Uno', from_pin: 'A0', to_component: 'Soil Hygrometer', to_pin: 'SIG/Analog', wire_color: 'green', signal_type: 'analog', description: 'Reads soil conductivity resistance' },
+      { from_component: 'Arduino Uno', from_pin: '5V', to_component: 'Soil Hygrometer', to_pin: 'VCC', wire_color: 'red', signal_type: 'power', description: '5V Power for probe excitation' },
+      { from_component: 'Arduino Uno', from_pin: 'GND', to_component: 'Soil Hygrometer', to_pin: 'GND', wire_color: 'black', signal_type: 'ground', description: 'Sensor ground reference' },
+      { from_component: 'Arduino Uno', from_pin: 'D7', to_component: '5V Relay Module', to_pin: 'IN', wire_color: 'yellow', signal_type: 'digital', description: 'Active LOW relay coil trigger' },
+      { from_component: 'Arduino Uno', from_pin: '5V', to_component: '5V Relay Module', to_pin: 'VCC', wire_color: 'red', signal_type: 'power', description: 'Logic circuit power' },
+      { from_component: 'Arduino Uno', from_pin: 'GND', to_component: '5V Relay Module', to_pin: 'GND', wire_color: 'black', signal_type: 'ground', description: 'Common system ground' },
+      { from_component: '5V Battery/Adapter', from_pin: 'Positive', to_component: '5V Relay Module', to_pin: 'COM', wire_color: 'red', signal_type: 'power', description: 'Pump power common supply' },
+      { from_component: '5V Relay Module', from_pin: 'NO', to_component: 'Submersible Pump', to_pin: '+Positive', wire_color: 'blue', signal_type: 'power', description: 'Switched power to motor' },
+      { from_component: 'Submersible Pump', from_pin: '-Negative', to_component: '5V Battery/Adapter', to_pin: 'Negative', wire_color: 'black', signal_type: 'ground', description: 'Pump return ground' }
+    ],
     components: [
       { id: 'c4-1', project_id: 'proj-004', name: '2x SG90 9g Micro Servo Motors', quantity: 2, component_type: 'hardware' },
       { id: 'c4-2', project_id: 'proj-004', name: '4x LDR Light Dependent Resistors (5mm)', quantity: 4, component_type: 'sensor' },
@@ -716,6 +753,18 @@ if __name__ == "__main__":
     access_tier: 'free',
     is_published: true,
     is_featured: false,
+    circuit_schematic_type: 'smart_plant',
+    wiring_connections: [
+      { from_component: 'Arduino Uno', from_pin: 'A0', to_component: 'Soil Hygrometer', to_pin: 'SIG/Analog', wire_color: 'green', signal_type: 'analog', description: 'Reads soil conductivity resistance' },
+      { from_component: 'Arduino Uno', from_pin: '5V', to_component: 'Soil Hygrometer', to_pin: 'VCC', wire_color: 'red', signal_type: 'power', description: '5V Power for probe excitation' },
+      { from_component: 'Arduino Uno', from_pin: 'GND', to_component: 'Soil Hygrometer', to_pin: 'GND', wire_color: 'black', signal_type: 'ground', description: 'Sensor ground reference' },
+      { from_component: 'Arduino Uno', from_pin: 'D7', to_component: '5V Relay Module', to_pin: 'IN', wire_color: 'yellow', signal_type: 'digital', description: 'Active LOW relay coil trigger' },
+      { from_component: 'Arduino Uno', from_pin: '5V', to_component: '5V Relay Module', to_pin: 'VCC', wire_color: 'red', signal_type: 'power', description: 'Logic circuit power' },
+      { from_component: 'Arduino Uno', from_pin: 'GND', to_component: '5V Relay Module', to_pin: 'GND', wire_color: 'black', signal_type: 'ground', description: 'Common system ground' },
+      { from_component: '5V Battery/Adapter', from_pin: 'Positive', to_component: '5V Relay Module', to_pin: 'COM', wire_color: 'red', signal_type: 'power', description: 'Pump power common supply' },
+      { from_component: '5V Relay Module', from_pin: 'NO', to_component: 'Submersible Pump', to_pin: '+Positive', wire_color: 'blue', signal_type: 'power', description: 'Switched power to motor' },
+      { from_component: 'Submersible Pump', from_pin: '-Negative', to_component: '5V Battery/Adapter', to_pin: 'Negative', wire_color: 'black', signal_type: 'ground', description: 'Pump return ground' }
+    ],
     components: [
       { id: 'c6-1', project_id: 'proj-006', name: 'Python 3 installation', quantity: 1, component_type: 'software' }
     ],
